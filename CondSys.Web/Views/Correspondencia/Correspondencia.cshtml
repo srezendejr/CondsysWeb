@@ -1,0 +1,191 @@
+﻿@model CondSys.Model.Correspondencias.CorrespondenciaDto
+
+@{
+    ViewBag.Title = "Correspondencia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Salvar", "Correspondencia", FormMethod.Post, new { id = "frmCorrespondencia", @autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id, new { id = "hidId" })
+    @Html.HiddenFor(model => model.MoradorId, new { id = "hidMoradorId" })
+    @Html.HiddenFor(model => model.RecebidoPorId, new { id = "hidRecebidoPorId" })
+    @Html.HiddenFor(model => model.EntreguePorId, new { id = "hidEntreguePorId" })
+    <div class="form-horizontal">
+        <ul class="collapsible">
+            <li class="active">
+                <div class="collapsible-header"><i class="material-icons">mail</i>Correspondência</div>
+                <div class="collapsible-body">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.DataChegada, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.DataChegada, new { @class = "form-control datepicker", id = "txtDataChegada" })
+                                @Html.ValidationMessageFor(model => model.DataChegada, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group @(Model.Id == 0 ? "hide": "") col s6">
+                            @Html.LabelFor(model => model.DataEntrega, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.DataEntrega, new { @class = "form-control datepicker", id = "txtDataEntrega" })
+                                @Html.ValidationMessageFor(model => model.DataEntrega, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group @(Model.Id == 0 ? "hide": "") col s6">
+                            @Html.LabelFor(model => model.Entregue, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    <label>
+                                        @Html.CheckBoxFor(model => model.Entregue, new { id = "chkEntregue" })
+                                        @Html.ValidationMessageFor(model => model.Entregue, "", new { @class = "text-danger" })
+                                        <span class="small"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col s12">
+                            @Html.LabelFor(model => model.MoradorNome, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.MoradorNome, new { htmlAttributes = new { @class = "form-control", id = "txtMorador" } })
+                                @if (Model.DataEntrega == null)
+                                {
+                                    <button class="material-icons" id="btnPesquisaMorador" onclick="return false">search</button>
+                                }
+                                @Html.ValidationMessageFor(model => model.MoradorNome, "", new { @class = "text-danger", id = "lblAvisoMorador" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row hiddendiv" id="divMoradores">
+                        <table width="100%" id="tblMoradores" class="col s12">
+                            <thead>
+                                <tr>
+                                    <td>Nome</td>
+                                    <td>Unidade</td>
+                                    <td>Seleciona</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col s12">
+                            @Html.LabelFor(model => model.Mensagem, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.Mensagem, new { @class = "form-control", id = "txtAreaMensagem" })
+                                @Html.ValidationMessageFor(model => model.Mensagem, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Folha, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Folha, new { @class = "form-control", id = "txtFolha" })
+                                @Html.ValidationMessageFor(model => model.Folha, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Tipo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EnumDropDownListFor(model => model.Tipo, new { @class = "form-control", id = "ddlTipo" })
+                                @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="right-bottom">
+        @if (Model.DataEntrega == null)
+        {
+            <input type="submit" value="check" class="btn btn-floating material-icons" onclick="return false" id="btnSalvar" />
+        }
+        @Html.ActionLink("clear", "Index", null, new { @class = "btn btn-floating material-icons" })
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('.collapsible').accordion = true;
+        $('select').formSelect();
+        $("#btnSalvar").click(function () {
+            $("#frmCorrespondencia").submit();
+        });
+        //$('.datepicker').datepicker({ setDefaultDate: true });
+        $(document).on("click", ".btn-select", function () {
+            var id = $(this).attr("rel");
+            var name = $(this).attr("relname");
+            $("#txtMorador").val(name);
+            $("#hidMoradorId").val(id);
+            $("#divMoradores").addClass("hiddendiv");
+        });
+
+        $("#btnPesquisaMorador").click(function () {
+            var morador = $("#txtMorador").val();
+            if (morador == "") {
+                $("#lblAvisoMorador").text("Informe o nome ou a casa do morador para pesquisar");
+            }
+            else {
+                $("#lblAvisoMorador").text("");
+                var url = '@Url.Action("PesquisaMorador", "Morador")';
+                $.getJSON(url, { doc: morador }).done(function (data) {
+                    var rows = $("#tblMoradores tbody tr");
+                    rows.remove();
+                    if (!data || data.length == 0) {
+                        $("#divMoradores").addClass("hiddendiv");
+                        $("#lblAvisoMorador").text("Morador não encontrado");
+                    }
+                    else {
+                        $("#divMoradores").removeClass("hiddendiv");
+                        for (var i = 0; i < data.length; i++) {
+                            $("#tblMoradores tbody").append(
+                            "<tr> <td>" + data[i].Nome + "</td>" +
+                            "<td>" + data[i].Unidade + "</td>" +
+                            "<td><button class='material-icons btn-select' rel='" + data[i].PessoaId + "' relname = '" + data[i].Nome + "' onclick='return false' id='btnSelecionar'>play_arrow</button></td> </tr>");
+                        }
+                    }
+                });
+            }
+        });
+
+        $('.datepicker').datepicker({
+            i18n: {
+                months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabádo'],
+                weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                weekdaysAbbrev: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                today: 'Hoje',
+                clear: 'Limpar',
+                cancel: 'Sair',
+                done: 'Confirmar',
+                labelMonthNext: 'Próximo mês',
+                labelMonthPrev: 'Mês anterior',
+                labelMonthSelect: 'Selecione um mês',
+                labelYearSelect: 'Selecione um ano',
+                selectMonths: true,
+                selectYears: 15,
+            },
+            autoClose: true,
+            format: 'dd/mm/yyyy',
+            container: 'body',
+            defaultDate: new Date(),
+            setDefaultDate: true,
+            //onClose: function ()
+            //{
+            //    var d = new Date();
+            //    var h = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+            //    var dataAtual = $('#txtDataChegada').val() + ' ' + h;
+            //    $('#txtDataChegada').val(dataAtual);
+            //}
+        });
+    })
+</script>

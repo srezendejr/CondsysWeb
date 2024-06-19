@@ -1,0 +1,110 @@
+﻿@model IEnumerable<CondSys.Model.MoradorDto>
+
+@{
+    ViewBag.Title = "Morador";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="table-responsive">
+    <table id="tblItens" class="table table-striped table-hover dt-responsive display nowrap" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Unidade)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cpf)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rg)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr class=@((item.Unidade == null || string.IsNullOrEmpty(item.Unidade.Numero)) && item.Ativo ? "red" : "")>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Unidade.Numero)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cpf)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rg)
+                        </td>
+                        <td>
+                            <div class="showstatus @(item.Ativo ? "green" : "yellow darken-1")">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </div>
+                        </td>
+                        <td class="width-10p">
+                            @Html.ActionLink("edit", "Editar", new { id = item.PessoaId }, new { @class = "btn btn-floating material-icons", id = "btnEdit" })
+                            <div class="fixed-action-btn @(ViewBag.MoradorUsuario? "hide": "")">
+                                <a class="btn btn-floating">
+                                    <i class="material-icons">toc</i>
+                                </a>
+                                <ul>
+                                    <li><a class="btn-floating btn-large btn-status" id="btnStatus" title=@(item.Ativo ? "Inativar" : "Ativar") rel="@item.PessoaId" data-rel="1"><i class="material-icons">settings_power</i></a></li>
+                                    <li><a class="btn-floating btn-large btn-status" title="Desvincular Unidade" id="btnDesvincular" rel="@item.PessoaId" data-rel="0"><i class="material-icons">link_off</i></a></li>
+                                </ul>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="right-bottom @(ViewBag.MoradorUsuario? "hide": "")">
+    @Html.ActionLink("add", "Novo", null, new { @class = "btn btn-floating material-icons" })
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        $('.fixed-action-btn').floatingActionButton({
+            hoverEnabled: false,
+            direction: 'right'
+        });
+
+        $(document).on("click", ".btn-status", function () {
+            var op = $(this).data("rel");
+            var id = $(this).attr("rel");
+            if (op == 1) {
+                alteraStatus(id);
+            }
+            else {
+                desvincularUnidade(id);
+            }
+        });
+
+        var alteraStatus = function (id) {
+            var url = '@Url.Action("AlteraStatus", "Morador")';
+            $.post(url, { PessoaId: id }, function () {
+                window.location.reload(true);
+            });
+        };
+
+        var desvincularUnidade = function (id) {
+            var url = '@Url.Action("DesvincularUnidade", "Morador")';
+            $.post(url, { PessoaId: id }, function () {
+                window.location.reload(true);
+            });
+        };
+    });
+</script>

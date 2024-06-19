@@ -1,0 +1,62 @@
+﻿@model CondSys.Model.AvisosDto
+
+@{
+    ViewBag.Title = "Aviso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Salvar", "Aviso", FormMethod.Post, new { id = "frmAviso", @autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.AvisoId, new { id = "hidAvisoId" })
+    @Html.HiddenFor(model => model.Data, new { id = "hidData" })
+    <div class="form-horizontal">
+        <ul class="collapsible">
+            <li class="active">
+                <div class="collapsible-header row"><i class="material-icons">record_voice_over</i>Aviso</div>
+                <div class="collapsible-body">
+
+                    <div class="form-group @(Model.AvisoId == 0 ? "hide": "") col s12">
+                        @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Data, new { htmlAttributes = new { @class = "form-control", disabled="disabled" } })
+                            @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col s12">
+                        @Html.LabelFor(model => model.Titulo, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Titulo, new { @class = "form-control" } )
+                            @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col s12">
+                        @Html.LabelFor(model => model.Mensagem, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.Mensagem, new { @class = "form-control rem_15" } )
+                            @Html.ValidationMessageFor(model => model.Mensagem, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="right-bottom">
+        <input type="submit" value="check" class="btn btn-floating material-icons" onclick="return false" id="btnSalvar" />
+        @Html.ActionLink("clear", "Index", null, new { @class = "btn btn-floating material-icons" })
+    </div>
+
+}
+
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('.collapsible').accordion = true;
+        $('select').formSelect();
+        $("#btnSalvar").click(function () {
+            $("#frmAviso").submit();
+        });
+    });
+</script>

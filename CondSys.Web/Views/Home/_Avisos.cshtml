@@ -1,0 +1,98 @@
+﻿@model IEnumerable<CondSys.Model.AvisosDto>
+<ul class="collapsible">
+    <li>
+        <div class="collapsible-header"><i class="material-icons">record_voice_over</i>Avisos</div>
+        <div class="collapsible-body">
+            <div class="table-responsive">
+                <table id="tblAvisos" class="table table-striped table-hover dt-responsive display nowrap" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Data)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Titulo)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Data)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Titulo)</td>
+                                    <td style="width:10%">
+                                        @if (ViewBag.MoradorUsuario)
+                                        {
+                                            @Html.ActionLink("done", "MarcarComoLido", "Aviso", new { id = item.AvisoId, morador= item.PessoaId }, new { @class = "btn btn-floating material-icons btn-lido", id = "btnLido" })
+                                            @*@Html.ActionLink("edit", "Editar", new { id = item.Id }, new { @class = "btn btn-floating material-icons", id = "btnEdit" })*@
+
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<script>
+    $(document).ready(function () {
+        $("#tblAvisos").DataTable({
+            language: {
+                //url: '../Scripts/DataTables-1.10.10/Plugins-master/i18n/Portuguese-Brasil.lang',
+                //url: "https://cdn.datatables.net/plug-ins/1.10.10/i18n/Portuguese-Brasil.json",
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "resultados por página_MENU_",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+            "pageLength": 5,
+            "lengthMenu": [5, 10, 15, 20, 25],
+            "pagingType": "full_numbers",
+            "dom": '<"top"fl>rt<"bottom"ip><"clear">',
+            "destroy": true
+        });
+
+        $(".paginate_button").click(function () {
+            $('.fixed-action-btn').floatingActionButton({
+                hoverEnabled: false,
+                direction: 'right'
+            });
+
+        });
+
+        $(document).on("click", ".btn-lido", function () {
+            var url = '@Url.Action("MarcarComoLido", "Aviso")';
+            var id = $(this).attr("rel");
+            var morador = $(this).data("rel");
+            $.post(url, { id: id, morador: morador }, function () {
+                window.location.reload(true);
+            });
+
+        });
+    });
+</script>

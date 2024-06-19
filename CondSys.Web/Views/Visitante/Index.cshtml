@@ -1,0 +1,260 @@
+﻿@model CondSys.Model.MovimentoDto
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("Salvar", "Visitante", FormMethod.Post, new { id = "frmVisitante", @autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <ul class="collapsible">
+            <li class="active">
+                <div class="collapsible-header"><i class="material-icons">transfer_within_a_station</i>Entrada</div>
+                <div class="collapsible-body row">
+                    <div class="camera row">
+                        <div class="col s6">
+                            <video id="video" class="center-block">Video stream not available.</video>
+                            <button id="turnonbutton" class="material-icons button-photo" title="Ligar Câmera" onclick="return false">camera_enhance</button>
+                        </div>
+                        <div class="output col s6">
+                            <img id="photo" alt="" class="center-block">
+                            <button id="startbutton" class="material-icons button-capture-photo" title="Capurar Imagem" onclick="return false">photo_camera</button>
+                        </div>
+                        <div class="col s6">
+                            <canvas id="canvas" style="display:none"></canvas>
+                        </div>
+                    </div>
+                    @Html.HiddenFor(model => model.MovimentoId, new { id = "hidMovimentoId" })
+                    @Html.HiddenFor(model => model.MoradorId, new { id = "hidMoradorId" })
+                    @Html.HiddenFor(model => model.DocId, new { id = "hidDocId" })
+                    @Html.HiddenFor(model => model.PessoaId, new { id = "hidVisitanteId" })
+                    @Html.HiddenFor(model => model.Foto, new { id = "hidFotoVisitante" })
+                    @Html.HiddenFor(model => model.DataHoraEntrada, new { id = "hidDataHora" })
+                    <div class="row">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Doc, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Doc, new { htmlAttributes = new { @class = "form-control", id = "txtDocVisitante" } })
+                                <button class="material-icons" id="btnPesquisaVisitante" onclick="return false">search</button>
+                                @Html.ValidationMessageFor(model => model.Doc, "", new { @class = "text-danger", id = "lblAvisoDocVisitante" })
+                            </div>
+                        </div>
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.NomeVisitante, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.NomeVisitante, new { htmlAttributes = new { @class = "form-control", id = "txtNomeVisitante" } })
+                                @Html.ValidationMessageFor(model => model.NomeVisitante, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.TipoDoc, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EnumDropDownListFor(model => model.TipoDoc, new { htmlAttributes = new { @class = "form-control", id = "ddlTipoDocumento" } })
+                                @Html.ValidationMessageFor(model => model.TipoDoc, "", new { @class = "text-danger", id = "lblAvisoDocVisitante" })
+                            </div>
+                        </div>
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Tipo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EnumDropDownListFor(model => model.Tipo, new { htmlAttributes = new { @class = "form-control", id = "ddlTipoDocumento" } })
+                                @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger", id = "lblAvisoDocVisitante" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.NroCartao, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.NroCartao, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.NroCartao, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.PlacaVeiculo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PlacaVeiculo, new { htmlAttributes = new { @class = "form-control", id = "txtPlacaVeiculo" } })
+                                @Html.ValidationMessageFor(model => model.PlacaVeiculo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.MoradorNome, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.MoradorNome, new { htmlAttributes = new { @class = "form-control", id = "txtMorador" } })
+                                <button class="material-icons" id="btnPesquisaMorador" onclick="return false">search</button>
+                                @Html.ValidationMessageFor(model => model.MoradorNome, "", new { @class = "text-danger", id = "lblAvisoMorador" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-bottom" style="right:7%!important">
+                        <input type="submit" value="check" class="btn btn-floating material-icons" title="Salvar" id="btnSalvar" onclick="return false;" />
+                        @Html.ActionLink("clear", "Index", null, new { @class = "btn btn-floating material-icons" })
+                    </div>
+
+                    <div class="row hiddendiv" id="divMoradores">
+                        <table width="100%" id="tblMoradores" class="col s12">
+                            <thead>
+                                <tr>
+                                    <td>Nome</td>
+                                    <td>Unidade</td>
+                                    <td>Seleciona</td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+    </div>
+}
+<div class="form-horizontal">
+    <ul class="collapsible">
+        <li class="active">
+            <div class="collapsible-header"><i class="material-icons">people</i>Visitantes no condomínio</div>
+            <div class="collapsible-body row hiddendiv" id="divVisitantesNaCasa">
+                <div style="width:100%">
+                    <table id="tblVisitantes1" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <td> Visitante </td>
+                                <td> Documento </td>
+                                <td> Hora Entrada </td>
+                                <td> Destino </td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('.collapsible').accordion = true;
+        $('select').formSelect();
+        $("#txtPlacaVeiculo").mask("SSS-9999");
+        BuscarVisitantesNoCondominio();
+
+        $("#btnPesquisaVisitante").click(function () {
+            var docVisitante = $("#txtDocVisitante").val();
+            if (docVisitante == "") {
+                $("#lblAvisoDocVisitante").text("Informe o documento do visitante para pesquisar");
+            }
+            else {
+                $("#lblAvisoDocVisitante").text("");
+                var url = '@Url.Action("PesquisaVisitante", "Visitante")';
+                $.getJSON(url, { doc: docVisitante }).done(function (data) {
+                    if (data.VisitanteId == 0) {
+                        $("#lblAvisoDocVisitante").text("Visitante não encontrado");
+                    }
+                    else {
+                        var photo = document.getElementById('photo');
+                        photo.setAttribute('src', data.Foto);
+                        $("#hidFotoVisitante").val(data.Foto);
+                        $("#txtNomeVisitante").val(data.Nome);
+                        $("#hidVisitanteId").val(data.VisitanteId);
+                    }
+                });
+            }
+        });
+        $("#btnPesquisaMorador").click(function () {
+            var morador = $("#txtMorador").val();
+            if (morador == "") {
+                $("#lblAvisoMorador").text("Informe o nome ou a casa do morador para pesquisar");
+            }
+            else {
+                $("#lblAvisoMorador").text("");
+                var url = '@Url.Action("PesquisaMorador", "Morador")';
+                $.getJSON(url, { doc: morador }).done(function (data) {
+                    var rows = $("#tblMoradores tbody tr");
+                    rows.remove();
+                    if (!data || data.length == 0) {
+                        $("#divMoradores").addClass("hiddendiv");
+                        $("#lblAvisoMorador").text("Morador não encontrado");
+                    }
+                    else {
+                        $("#divMoradores").removeClass("hiddendiv");
+                        for (var i = 0; i < data.length; i++) {
+                            $("#tblMoradores tbody").append(
+                            "<tr> <td>" + data[i].Nome + "</td>" +
+                            "<td>" + data[i].Unidade + "</td>" +
+                            "<td><button class='material-icons btn-select' rel='" + data[i].PessoaId + "' relname = '" + data[i].Nome + "' onclick='return false' id='btnSelecionar'>play_arrow</button></td> </tr>");
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#btnSalvar").click(function () {
+            $("#frmVisitante").submit();
+            BuscarVisitantesNoCondominio();
+        });
+    });
+    //var tbl = $("#tblVisitantes").DataTable({
+    //    language: {
+    //        url: "https://cdn.datatables.net/plug-ins/1.10.10/i18n/Portuguese-Brasil.json",
+    //    },
+    //    "pageLength": 5,
+    //    "dom": '<"top"f>rt<"bottom"ip><"clear">',
+    //    "destroy": true
+    //});
+    var BuscarVisitantesNoCondominio = function () {
+        var url = '@Url.Action("VisitantesNoCondominio", "Visitante")';
+        $.getJSON(url).done(function (data) {
+            $("#tblVisitantes1").empty();
+            if (data.length > 0) {
+                $("#divVisitantesNaCasa").removeClass("hiddendiv");
+                for (var i = 0; i < data.length; i++) {
+                    $("#tblVisitantes1").append("<tr> <td>" +
+                        data[i].NomeVisitante + "</td>" +
+                        "<td>" + data[i].Doc + "</td>" +
+                        "<td>" + data[i].Entrada + "</td>" +
+                        "<td>" + data[i].MoradorNome + "</td>" +
+                        "<td><button class='material-icons btn-saida-visitante' rel='" + data[i].MovimentoId + "' onclick='return false' id='btnSaída'>directions_run</button></td> </tr>"
+                    );
+                }
+
+                //tbl.clear().draw();
+                //for (var i = 0; i < data.length; i++) {
+                //    tbl.row.add([
+                //        data[i].NomeVisitante,
+                //        data[i].Doc,
+                //        data[i].Entrada,
+                //        data[i].MoradorNome,
+                //        "<td><button class='material-icons btn-saida-visitante' rel='" + data[i].MovimentoId + "' onclick='return false' id='btnSaída'>directions_run</button></td> </tr>"
+                //    ]).draw(false);
+                //}
+            }
+            else {
+                $("#divVisitantesNaCasa").addClass("hiddendiv");
+            }
+        });
+    }
+    $(document).on("click", ".btn-select", function () {
+        var id = $(this).attr("rel");
+        var name = $(this).attr("relname");
+        $("#txtMorador").val(name);
+        $("#hidMoradorId").val(id);
+        $("#divMoradores").addClass("hiddendiv");
+    });
+
+    $(document).on("click", ".btn-saida-visitante", function () {
+        var id = $(this).attr("rel");
+        var url = '@Url.Action("SaidaVisitante","Visitante")';
+        $.post(url, { id: id }, function () {
+            BuscarVisitantesNoCondominio();
+        });
+    });
+</script>
+<script src="~/Scripts/cam/cam.js"></script>

@@ -1,0 +1,87 @@
+﻿@model CondSys.Model.Usuarios.UsuarioDto
+
+@{
+    ViewBag.Title = "Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Salvar", "Usuario", FormMethod.Post, new { id = "frmUsuario", @autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.UsuarioId)
+    @Html.HiddenFor(model => model.PessoaId, new { id = "hidPessoaId" })
+    @Html.HiddenFor(model => model.Senha)
+    @Html.HiddenFor(model => model.ConfirmaSenha)
+    @Html.HiddenFor(model => model.Ativo, new { id="hidAtivo"})
+    <div class="form-horizontal">
+        <ul class="collapsible">
+            <li class="active">
+                <div class="collapsible-header"><i class="material-icons">supervisor_account</i>Usuário</div>
+                <div class="collapsible-body">
+                    <div class="row">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", id = "txtEmailUsuario", name = "txtEmailUsuario", autoComplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Admin, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    <label>
+                                        @if (ViewBag.UsuarioAdmin == true)
+                                        {
+                                            @Html.CheckBoxFor(model => model.Admin, new { id = "chkAdmin" });
+                                        }
+                                        else
+                                        {
+                                            @Html.HiddenFor(model => model.Admin);
+                                            @Html.CheckBoxFor(model => model.Admin, new { id = "chkAdmin", @disabled = "disabled" });
+                                        }
+                                        @Html.ValidationMessageFor(model => model.Admin, "", new { @class = "text-danger" })
+                                        <span class="small"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.GrupoAcesso, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="checkbox">
+                                    @Html.EnumDropDownListFor(model => model.GrupoAcesso)
+                                    @Html.ValidationMessageFor(model => model.GrupoAcesso, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="right-bottom">
+        <input type="submit" value="check" class="btn btn-floating material-icons" onclick="return false" id="btnSalvar" />
+        @Html.ActionLink("clear", "Index", null, new { @class = "btn btn-floating material-icons" })
+    </div>
+
+}
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('.collapsible').accordion = true;
+        $('select').formSelect();
+        $("#btnSalvar").click(function () {
+            $("#frmUsuario").submit();
+        });
+    });
+</script>

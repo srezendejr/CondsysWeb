@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "EsqueceuSenha";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="login-page" class="row">
+    <div class="col s12 z-depth-6 card-panel">
+        <div class="row">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">mail_outline</i>
+                @Html.TextBox("txtEmail", string.Empty, new { @class = "form-control input-lg", placeholder = "E-mail", autofocus = true, id = "txtEmail" })
+                @Html.ValidationMessage("Email", new { @class = "text-danger", id="msgEmail" })
+            </div>
+        </div>
+        <div class="row" style="margin-left:30%;">
+            <div class="col s6">
+                <input type="button" class="btn waves-effect waves-light col s12" value="Enviar" id="btnEnviarSenha" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnEnviarSenha").click(function () {
+            var email = $("#txtEmail").val();
+            var url = '@Url.Action("ResetarSenha", "Login")';
+            $.post(url, { email: email }, function (response) {
+                //window.location.reload(false);
+                $("#txtEmail").focus();
+                $("#msgEmail").text(response);
+            });
+        });
+    })
+</script>

@@ -1,0 +1,21 @@
+﻿@model CondSys.Model.Home.HomeDto
+@{
+    Layout = @"~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Home";
+}
+@if (ViewBag.MoradorUsuario)
+{
+    @Html.Partial("_Avisos", Model.Avisos)
+    @Html.Partial("_Correspondencias", Model.Correspondencias)
+}
+else
+{
+    <div class="square">
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $("#tblTestes").DataTable();
+    });
+</script>

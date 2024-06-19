@@ -1,0 +1,73 @@
+﻿@model IEnumerable<CondSys.Model.AvisosDto>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="table-responsive">
+    <table id="tblItens" class="table table-striped table-hover dt-responsive display nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Data)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Titulo)
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.DataHoraAviso)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Titulo)</td>
+                        <td style="width:10%">
+                            @if (!ViewBag.MoradorUsuario)
+                            {
+                                @Html.ActionLink("edit", "Editar", new { id = item.AvisoId }, new { @class = "btn btn-floating material-icons", id = "btnEdit" })
+                            }
+                            <div class="fixed-action-btn @(!ViewBag.MoradorUsuario ? "hide" : "")">
+                                <a class="btn btn-floating">
+                                    <i class="material-icons">toc</i>
+                                </a>
+                                <ul>
+                                    <li><a class="btn-floating btn-large btn-status" title="Lida" id="btnLida" rel="@item.AvisoId" rel-data=""><i class="material-icons">done</i></a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="right-bottom @(ViewBag.MoradorUsuario? "hide": "")">
+    @Html.ActionLink("add", "Novo", null, new { @class = "btn btn-floating material-icons" })
+</div>
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        $('.fixed-action-btn').floatingActionButton({
+            hoverEnabled: false,
+            direction: 'right'
+        });
+
+        $(document).on("click", ".btn-status", function () {
+            var url = '@Url.Action("MarcarComoLido", "Aviso")';
+            var id = $(this).attr("rel");
+            var morador = $(this).data("rel-data");
+            $.post(url, { id: id, morador: morador }, function () {
+                window.location.reload(true);
+            });
+
+        });
+
+    });
+</script>

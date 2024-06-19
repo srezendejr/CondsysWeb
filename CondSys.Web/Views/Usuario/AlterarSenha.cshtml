@@ -1,0 +1,36 @@
+﻿@model CondSys.Model.Usuarios.AlterarSenhaDto
+
+@{
+    ViewBag.Title = "AlterarSenha";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("SalvarSenha", "Usuario", FormMethod.Post, new { id = "frmAlterarSenha" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal row">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.UsuarioId, new { id = "hidUsuarioId" })
+
+        <div class="form-group col s6">
+            @Html.LabelFor(model => model.NovaSenha, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NovaSenha, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NovaSenha, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col s6">
+            @Html.LabelFor(model => model.ConfirmaNovaSenha, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ConfirmaNovaSenha, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ConfirmaNovaSenha, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="right-bottom bottom-2p" style="width:70px!important">
+            <input type="submit" value="add" class="btn btn-floating material-icons" />
+        </div>
+    </div>
+}

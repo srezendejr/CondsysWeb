@@ -1,0 +1,40 @@
+﻿<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+<ul id="slide-out" class="sidenav">
+    <li>
+        <div class="user-view">
+            <div class="background">
+                <img src="~/image/cond.jpeg">
+            </div>
+            <img class="circle" src="~/image/account-circle.png" />
+            <div class="user-view name">
+                @{CondSys.Model.Usuarios.UsuarioDto usuario = (CondSys.Model.Usuarios.UsuarioDto)HttpContext.Current.Session["Usuario"];}
+                @if (usuario != null)
+                {
+                    @usuario.Nome
+                }
+            </div>
+            <div class="user-view email">
+                @if (usuario != null)
+                {
+                    @usuario.Email
+                }
+            </div>
+        </div>
+    </li>
+    <li><a href="~/Home"><i class="material-icons">home</i>Principal</a></li>
+    @if (usuario != null && usuario.Menus != null)
+    {
+        foreach (var item in usuario.Menus)
+        {
+            <li><a href="@Url.Action("Index", item.Url)"><i class="material-icons itemMenu">@item.Icone</i>@item.Nome</a></li>
+        }
+    }
+    <li><a href="~/Login/Logoff"><i class="material-icons">exit_to_app</i>Sair</a></li>
+</ul>
+<script>
+    $(document).ready(function () {
+        $(".itemMenu").click(function () {
+            $('.sidenav').close();
+        });
+    });
+</script>

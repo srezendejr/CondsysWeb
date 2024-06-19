@@ -1,0 +1,139 @@
+﻿@model CondSys.Model.UH.UnidadeDto
+
+@{
+    ViewBag.Title = "Unidade";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Salvar", "Unidade", FormMethod.Post, new { id = "frmUnidade", @autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.UnidadeId, new { id = "hdnUnidadeId" })
+
+    <div class="form-horizontal">
+
+        <ul class="collapsible">
+            <li class="active">
+                <div class="collapsible-header @(Model.Status == CondSys.Enumerator.StatusUnidade.Ocupada ? "green" : Model.Status == CondSys.Enumerator.StatusUnidade.Desocupada ? "yellow darken-1" : "red")"><i class="material-icons">home</i>Unidade</div>
+                <div class="collapsible-body row">
+                    <div class="col-md-12">
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Numero, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", id = "txtNumero" } })
+                                @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Localizacao, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Localizacao, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Localizacao, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Bloco, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Bloco, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Bloco, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.Andar, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Andar, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Andar, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.AreaTotal, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.AreaTotal, new { htmlAttributes = new { @class = "form-control", id = "txtAreaTotal" } })
+                                @Html.ValidationMessageFor(model => model.AreaTotal, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.AreaTotalConstruida, htmlAttributes: new { @class = "control-label col-md-12" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.AreaTotalConstruida, new { htmlAttributes = new { @class = "form-control", id = "txtAreaConstruida" } })
+                                @Html.ValidationMessageFor(model => model.AreaTotalConstruida, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="form-horizontal  @(Model.UnidadeId == 0 ? "hiddendiv" : "" )">
+
+        <ul class="collapsible">
+            <li class="active">
+                <div class="collapsible-header"><i class="material-icons">group</i>Moradores</div>
+                <div class="collapsible-body row">
+                    <table id="tblMoradores" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">
+                                    Moradores
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Moradores != null)
+                            {
+                                foreach (var morador in Model.Moradores)
+                                {
+                                    <tr>
+                                        <td style="width:10%">
+                                            @Html.DisplayFor(modelItem => morador.Nome)
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="right-bottom">
+        <input type="submit" value="check" class="btn btn-floating material-icons" title="Salvar" />
+        @Html.ActionLink("clear", "Index", null, new { @class = "btn btn-floating material-icons", @title = "Cancelar" })
+        <div class="fixed-action-btn @(Model.UnidadeId == 0 ? "hide" : "")">
+            <a class="btn-floating btn-large">
+                <i class="large material-icons">toc</i>
+            </a>
+            <ul>
+                <li><a class="btn-floating btn-large btn-status @(Model.Status == CondSys.Enumerator.StatusUnidade.EmConstrucao ? "hide": "")" title="Em Obra" id="btnConstrucao" rel="@Model.UnidadeId" data-rel="2"><i class="material-icons">build</i></a></li>
+                <li><a class="btn-floating btn-large btn-status @(Model.Status == CondSys.Enumerator.StatusUnidade.Ocupada ? "hide": "")" title="Ocupada" id="btnOcupada" rel="@Model.UnidadeId" data-rel="0"><i class="material-icons">settings_power</i></a></li>
+                <li><a class="btn-floating btn-large btn-status @(Model.Status == CondSys.Enumerator.StatusUnidade.Desocupada ? "hide": "")" title="Desocupada" id="btnDesocupada" rel="@Model.UnidadeId" data-rel="1"><i class="material-icons">exit_to_app</i></a></li>
+            </ul>
+        </div>
+    </div>
+
+}
+
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+        $('.collapsible').accordion = true;
+        $('.fixed-action-btn').floatingActionButton({
+            hoverEnabled: false
+        });
+        $('#txtAreaConstruida').mask("#.##0,00", { reverse: true });
+        $('#txtAreaTotal').mask("#.##0,00", { reverse: true });
+        $("#txtNumero").focus();
+        $(".btn-status").click(function () {
+            var url = '@Url.Action("AlteraStatus", "Unidade")';
+            var id = $(this).attr("rel");
+            var status = $(this).data("rel");
+            $.post(url, { id: id, status: status }, function () {
+                var urlindex = '@Url.Action("Index", "Unidade")';
+                window.location.href = urlindex;
+            });
+        });
+    });
+</script>

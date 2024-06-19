@@ -1,0 +1,521 @@
+﻿body {
+    padding-top: 25px;
+    padding-bottom: 10px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 80%;
+}
+
+div.input-field.col.s12 span {
+    padding: 50px;
+}
+
+#login-page {
+    width: 400px;
+}
+
+.classDisalbed[disabled] {
+    cursor: not-allowed;
+}
+
+@media only screen and (max-width: 992px) {
+    #login-page {
+        width: 250px;
+    }
+}
+
+.card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+div.right-bottom {
+    position: fixed;
+    bottom: 13%;
+    right: 10%;
+    z-index: 99;
+}
+
+.right-bottom .fixed-action-btn {
+    margin: 0px;
+    z-index: 0;
+    right: 5.5%;
+    bottom: 13%;
+    padding-top: 0px;
+}
+
+.text-danger {
+    color: #b94a48;
+}
+
+/*.btn-status {
+    background-image: url("../image/icon-status.png");
+    background-repeat: no-repeat;
+    background-position: 49% -70px;
+    background-size: 22px 110px;
+}
+
+    .btn-status.active {
+        background-position: 50% -28px;
+    }
+
+    .btn-status.disable {
+        cursor: not-allowed;
+        background-position: 50% 15px;
+    }*/
+
+label.control-label {
+    font-size: 1em;
+}
+
+.form-horizontal.collapsible-body {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+div#tblItens_length label {
+    font-size: 1em;
+}
+
+    div#tblItens_length label input {
+        font-size: 1em;
+        height: 2rem;
+    }
+
+    div#tblItens_length label div.select-wrapper {
+        width: 55px;
+    }
+
+div#tblItens_filter label {
+    font-size: 1em;
+    text-align: center;
+}
+
+    div#tblItens_filter label input[type="search"] {
+        font-size: 1em;
+        height: 2rem;
+    }
+
+table#tblItens tbody td a.btn.btn-floating.material-icons {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+}
+
+table#tblAvisos tbody td a.btn.btn-floating.material-icons {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+}
+
+td div.fixed-action-btn {
+    position: relative;
+    padding: 0 0 0 0;
+    float: right;
+    top: 0px;
+    right: 40%;
+}
+
+    td div.fixed-action-btn a.btn-floating {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        position: relative;
+    }
+
+        td div.fixed-action-btn a.btn-floating i {
+            line-height: 40px;
+        }
+
+td div.showstatus {
+    border-radius: 30%;
+    width: 100%;
+    -webkit-border-radius: 100px;
+    text-align: center;
+    color: white;
+}
+
+td div.fixed-action-btn.direction-right.active ul li {
+    margin: 0px;
+}
+
+td div.fixed-action-btn.direction-right.active ul {
+    left: 50px;
+}
+
+td div.fixed-action-btn.direction-right {
+    padding: 0px;
+    left: -5%;
+}
+
+.col-md-10 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 83.33333333333334%;
+}
+
+.col-md-2 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 16.666666666666664%;
+}
+
+/* Checkboxes
+   ========================================================================== */
+/* Remove default checkbox */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+[type="checkbox"] {
+    /* checkbox aspect */
+}
+
+    [type="checkbox"] + [type="hidden"] + span:not(.lever) {
+        position: relative;
+        padding-left: 35px;
+        cursor: pointer;
+        display: inline-block;
+        height: 25px;
+        line-height: 25px;
+        font-size: 0.8rem;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        [type="checkbox"] + [type="hidden"] + span:not(.lever):before,
+        [type="checkbox"]:not(.filled-in) + [type="hidden"] + span:not(.lever):after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 18px;
+            height: 18px;
+            z-index: 0;
+            border: 2px solid #5a5a5a;
+            border-radius: 1px;
+            margin-top: 3px;
+            -webkit-transition: .2s;
+            transition: .2s;
+        }
+
+    [type="checkbox"]:not(.filled-in) + [type="hidden"] + span:not(.lever):after {
+        border: 0;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    [type="checkbox"]:not(:checked):disabled + [type="hidden"] + span:not(.lever):before {
+        border: none;
+        background-color: rgba(0, 0, 0, 0.42);
+    }
+
+    [type="checkbox"].tabbed:focus + [type="hidden"] + span:not(.lever):after {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        border: 0;
+        border-radius: 50%;
+        -webkit-box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    [type="checkbox"]:checked + [type="hidden"] + span:not(.lever):before {
+        top: -4px;
+        left: -5px;
+        width: 12px;
+        height: 22px;
+        border-top: 2px solid transparent;
+        border-left: 2px solid transparent;
+        border-right: 2px solid #26a69a;
+        border-bottom: 2px solid #26a69a;
+        -webkit-transform: rotate(40deg);
+        transform: rotate(40deg);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+    }
+
+    [type="checkbox"]:checked:disabled + [type="hidden"] + span:before {
+        border-right: 2px solid rgba(0, 0, 0, 0.42);
+        border-bottom: 2px solid rgba(0, 0, 0, 0.42);
+    }
+
+    /* Indeterminate checkbox */
+    [type="checkbox"]:indeterminate + [type="hidden"] + span:not(.lever):before {
+        top: -11px;
+        left: -12px;
+        width: 10px;
+        height: 22px;
+        border-top: none;
+        border-left: none;
+        border-right: 2px solid #26a69a;
+        border-bottom: none;
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+    }
+
+    [type="checkbox"]:indeterminate:disabled + [type="hidden"] + span:not(.lever):before {
+        border-right: 2px solid rgba(0, 0, 0, 0.42);
+        background-color: transparent;
+    }
+
+    [type="checkbox"].filled-in + [type="hidden"] + span:not(.lever):after {
+        border-radius: 2px;
+    }
+
+    [type="checkbox"].filled-in + [type="hidden"] + span:not(.lever):before,
+    [type="checkbox"].filled-in + [type="hidden"] + span:not(.lever):after {
+        content: '';
+        left: 0;
+        position: absolute;
+        /* .1s delay is for check animation */
+        -webkit-transition: border .25s, background-color .25s, width .20s .1s, height .20s .1s, top .20s .1s, left .20s .1s;
+        transition: border .25s, background-color .25s, width .20s .1s, height .20s .1s, top .20s .1s, left .20s .1s;
+        z-index: 1;
+    }
+
+    [type="checkbox"].filled-in:not(:checked) + [type="hidden"] + span:not(.lever):before {
+        width: 0;
+        height: 0;
+        border: 3px solid transparent;
+        left: 6px;
+        top: 10px;
+        -webkit-transform: rotateZ(37deg);
+        transform: rotateZ(37deg);
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+    }
+
+    [type="checkbox"].filled-in:not(:checked) + [type="hidden"] + span:not(.lever):after {
+        height: 20px;
+        width: 20px;
+        background-color: transparent;
+        border: 2px solid #5a5a5a;
+        top: 0px;
+        z-index: 0;
+    }
+
+    [type="checkbox"].filled-in:checked + [type="hidden"] + span:not(.lever):before {
+        top: 0;
+        left: 1px;
+        width: 8px;
+        height: 13px;
+        border-top: 2px solid transparent;
+        border-left: 2px solid transparent;
+        border-right: 2px solid #fff;
+        border-bottom: 2px solid #fff;
+        -webkit-transform: rotateZ(37deg);
+        transform: rotateZ(37deg);
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+    }
+
+    [type="checkbox"].filled-in:checked + [type="hidden"] + span:not(.lever):after {
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #26a69a;
+        background-color: #26a69a;
+        z-index: 0;
+    }
+
+    [type="checkbox"].filled-in.tabbed:focus + [type="hidden"] + span:not(.lever):after {
+        border-radius: 2px;
+        border-color: #5a5a5a;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    [type="checkbox"].filled-in.tabbed:checked:focus + [type="hidden"] + span:not(.lever):after {
+        border-radius: 2px;
+        background-color: #26a69a;
+        border-color: #26a69a;
+    }
+
+    [type="checkbox"].filled-in:disabled:not(:checked) + [type="hidden"] + span:not(.lever):before {
+        background-color: transparent;
+        border: 2px solid transparent;
+    }
+
+    [type="checkbox"].filled-in:disabled:not(:checked) + [type="hidden"] + span:not(.lever):after {
+        border-color: transparent;
+        background-color: #949494;
+    }
+
+    [type="checkbox"].filled-in:disabled:checked + [type="hidden"] + span:not(.lever):before {
+        background-color: transparent;
+    }
+
+    [type="checkbox"].filled-in:disabled:checked + [type="hidden"] + span:not(.lever):after {
+        background-color: #949494;
+        border-color: #949494;
+    }
+
+.width-10p {
+    width: 10%;
+}
+
+.bottom-2p {
+    bottom: 2% !important;
+}
+
+.button-photo {
+    float: right;
+    margin-left: 0px;
+    margin-right: 50px;
+    margin-top: -30px;
+}
+
+.button-capture-photo {
+    float: right;
+    margin-top: -30px;
+    margin-right: 50px;
+}
+
+span.field-validation-error.text-danger {
+    width: 100%;
+    position: relative;
+    float: left;
+}
+
+.btn-saida-visitante {
+    cursor: pointer;
+}
+
+textarea.rem_15 {
+    height: 15rem;
+}
+
+.square {
+    /*background: #000;*/
+    width: 80vw;
+    height: 50vw;
+    border: 1px solid #dcd9d9;
+}
+
+    .square h1 {
+        color: #000;
+    }
+
+@media only screen and (max-width: 992px) {
+    div.right-bottom {
+        position: fixed;
+        bottom: 13%;
+        right: 22%;
+        z-index: 1;
+    }
+
+    td div.fixed-action-btn {
+        position: relative;
+        padding: 0 0 0 0;
+        float: right;
+        top: 0px;
+        right: 0%;
+        z-index: 1;
+    }
+
+    div.row .col.s3-4 {
+        width: 100%;
+        margin-left: auto;
+        left: auto;
+        right: auto;
+        padding-left: 12px;
+        padding-right: 0px;
+    }
+
+    div.row .col.s6 {
+        width: 100%;
+        margin-left: auto;
+        left: auto;
+        right: auto;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    div.collapsible-body {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .col-md-10 {
+        width: 100%;
+        padding-right: 0px;
+    }
+
+    textarea {
+        height: 5rem !important;
+    }
+
+    .camera {
+        width: 10px;
+        margin-left: 60px !important;
+    }
+
+    video {
+        width: 150px;
+        float: left;
+        top: 0px;
+        margin-top: -35px;
+    }
+
+    img#photo {
+        width: 150px;
+        float: left;
+        top: 0px;
+        margin-top: -35px;
+    }
+
+    #turnonbutton {
+        margin-right: 0px;
+        float: right;
+        position: relative;
+        left: 0;
+        padding: 0px;
+        margin-top: 0px;
+        top: -50px;
+    }
+
+    #startbutton {
+        margin-right: 0px;
+        float: right;
+        position: relative;
+        left: 0;
+        padding: 0px;
+        margin-top: 0px;
+        top: -50px;
+    }
+
+    .width-360px {
+        width: 360px !important;
+    }
+}

@@ -1,0 +1,100 @@
+﻿@model IEnumerable<CondSys.Model.Correspondencias.CorrespondenciaDto>
+
+@{
+    ViewBag.Title = "Correspondência";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="table-responsive">
+    <table id="tblItens" class="table table-striped table-hover dt-responsive display nowrap" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataChegada)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataEntrega)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Entregue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MoradorNome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Folha)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TipoCorrespondencia)
+                </th>
+                <th class="@(ViewBag.MoradorUsuario ? "hide" : "")"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataHoraChegada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataHoraEntrega)
+                        </td>
+                        <td style="width:13%">
+                            <div class="showstatus @(item.Entregue ? "green" :"red")">
+                                @Html.DisplayFor(modelItem => item.JaEntregue)
+                            </div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MoradorNome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Folha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoCorrespondencia)
+                        </td>
+                        <td style="width:10%" class="@(ViewBag.MoradorUsuario ? "hide" : "")">
+                            @Html.ActionLink("edit", "Editar", new { id = item.Id }, new { @class = "btn btn-floating material-icons", id = "btnEdit" })
+                            <div class="fixed-action-btn">
+                                <a class="btn btn-floating">
+                                    <i class="material-icons">toc</i>
+                                </a>
+                                <ul>
+                                    <li><a class="btn-floating btn-large btn-status" title="Entregar" id="btnEntrega" rel="@item.Id"><i class="material-icons">done</i></a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="right-bottom @(ViewBag.MoradorUsuario? "hide": "")">
+    @Html.ActionLink("add", "Novo", null, new { @class = "btn btn-floating material-icons" })
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('select').formSelect();
+        $('.fixed-action-btn').floatingActionButton({
+            hoverEnabled: false,
+            direction: 'right'
+        });
+
+        $(document).on("click", ".btn-status", function () {
+            var url = '@Url.Action("Entregar", "Correspondencia")';
+            var id = $(this).attr("rel");
+            var status = $(this).data("rel");
+            $.post(url, { id: id, status: status }, function () {
+                window.location.reload(true);
+            });
+
+        });
+
+    });
+</script>
